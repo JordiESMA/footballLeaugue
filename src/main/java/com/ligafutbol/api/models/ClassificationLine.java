@@ -1,4 +1,4 @@
-package models;
+package com.ligafutbol.api.models;
 
 public class ClassificationLine {
     private Team team;
@@ -8,7 +8,6 @@ public class ClassificationLine {
     private int matchesLost;
     private int goalsFor;
     private int goalsAgainst;
-    private int goalsDifference;
     private int points;
 
     public ClassificationLine(Team team, int matchesPlayed, int matchesWon, int matchesDrawn, int matchesLost, int goalsFor, int goalsAgainst, int points) {

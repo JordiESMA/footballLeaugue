@@ -1,4 +1,4 @@
-package models;
+package com.ligafutbol.api.models;
 
 public enum EventType {
 

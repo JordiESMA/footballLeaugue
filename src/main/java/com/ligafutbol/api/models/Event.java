@@ -1,27 +1,34 @@
-package models;
+package com.ligafutbol.api.models;
 
+import jakarta.persistence.*;
+
+@Embeddable
 public class Event {
+
+    @Enumerated(EnumType.STRING)
     private EventType eventType;
-    private int minute;
+
+    private int minuteEvent;
+
+    @ManyToOne
     private Player player;
 
-    //CONSTRUCTOR
+    //CONSTRUCTORS
+    public Event() {}
 
-    public Event(EventType eventType, int minute, Player player) {
+    public Event(EventType eventType, int minuteEvent, Player player) {
         this.eventType = eventType;
-        this.minute = minute;
+        this.minuteEvent = minuteEvent;
         this.player = player;
     }
 
     //GETTERS
-
-
     public EventType getEventName() {
         return eventType;
     }
 
     public int getMinute() {
-        return minute;
+        return minuteEvent;
     }
 
     public Player getPlayer() {
