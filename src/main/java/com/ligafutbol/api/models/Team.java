@@ -1,6 +1,8 @@
 package com.ligafutbol.api.models;
 
 import jakarta.persistence.*;
+import lombok.Setter;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,11 +14,14 @@ public class Team {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Setter
     private String name;
+    @Setter
     private String city;
+    @Setter
     private int foundationYear;
 
-    @OneToMany(mappedBy = "team", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "team")
     private List<Player> players = new ArrayList<>();
 
     //CONSTRUCTORS
@@ -48,4 +53,7 @@ public class Team {
     public List<Player> getPlayers() {
         return players;
     }
+
+
+
 }

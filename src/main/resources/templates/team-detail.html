@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns:th="http://thymeleaf.org" lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Detalle del Equipo</title>
+    <link rel="stylesheet" th:href="@{/css/team.css}">
+</head>
+<body>
+
+<div class="detail-card">
+    <h1 th:text="${team.name}">Nombre del Equipo</h1>
+
+    <div class="detail-item">
+        <span class="detail-label">Ciudad</span>
+        <span class="detail-value" th:text="${team.city}">Ciudad</span>
+    </div>
+
+    <div class="detail-item">
+        <span class="detail-label">Año de fundación</span>
+        <span class="detail-value" th:text="${team.foundationYear}">1900</span>
+    </div>
+
+    <div class="detail-actions">
+        <a th:href="@{/teams}" class="btn-back">Volver al listado</a>
+
+        <form th:action="@{/teams/{id}/delete(id=${team.id})}" method="post"
+              onsubmit="return confirm('¿Quieres eliminar el equipo?')">
+            <button type="submit" class="btn-delete">Eliminar Club</button>
+        </form>
+    </div>
+
+</div>
+
+</body>
+</html>

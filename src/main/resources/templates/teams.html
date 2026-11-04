@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Gestión de Equipos</title>
+    <link rel="stylesheet" th:href="@{/css/team.css}">
+</head>
+<body>
+
+<div class="container">
+
+    <div class="error-box" th:if="${error}" th:text="${error}"></div>
+    <div class="success-box" th:if="${success}" th:text="${success}"></div>
+
+    <div class="header-row">
+        <h2>Listado de Equipos</h2>
+        <a th:href="@{/teams/new}" class="btn-open">+ Añadir equipo</a>
+    </div>
+
+    <table class="data-table">
+        <thead>
+        <tr>
+            <th>Club</th>
+            <th>Ciudad</th>
+            <th>Acciones</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="t : ${teams}">
+            <td th:text="${t.name}">FC Barcelona</td>
+            <td th:text="${t.city}">Barcelona</td>
+            <td>
+                <a th:href="@{/teams/{id}(id=${t.id})}" class="link-action">Ver Detalle</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+</body>
+</html>
