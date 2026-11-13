@@ -16,6 +16,9 @@ public class Match {
 
     private int matchday;
 
+    private Integer homeScore;
+    private Integer awayScore;
+
     @ManyToOne
     private Team homeTeam;
 
@@ -42,20 +45,43 @@ public class Match {
      * @return the formatted result of the match
      */
     public String getResult() {
-        int homeGoals = 0;
-        int awayGoals = 0;
+        int homeGoals = getHomeGoals();
+        int awayGoals = getAwayGoals();
+
+        return homeTeam.getName() + " : " + homeGoals + " - " + awayGoals + " : " + awayTeam.getName();
+    }
+
+    /** Returns the stored score, or calculates it from goal events. */
+    public int getHomeGoals() {
+        return homeScore != null ? homeScore : countGoalsFor(homeTeam);
+    }
+
+    /** Returns the stored score, or calculates it from goal events. */
+    public int getAwayGoals() {
+        return awayScore != null ? awayScore : countGoalsFor(awayTeam);
+    }
+
+    private int countGoalsFor(Team team) {
+        int goals = 0;
 
         for (Event event : events) {
             if (event.getEventName() == EventType.GOAL) {
                 Long teamId = event.getPlayer().getTeam().getId();
-                if (teamId.equals(homeTeam.getId())) {
-                    homeGoals++;
-                } else if (teamId.equals(awayTeam.getId())) {
-                    awayGoals++;
+                if (teamId.equals(team.getId())) {
+                    goals++;
                 }
             }
         }
-        return homeTeam.getName() + " : " + homeGoals + " - " + awayGoals + " : " + awayTeam.getName();
+        return goals;
+    }
+
+    /** Stores a result published by the competition. */
+    public void setScore(int homeScore, int awayScore) {
+        if (homeScore < 0 || awayScore < 0) {
+            throw new IllegalArgumentException("El marcador no puede ser negativo");
+        }
+        this.homeScore = homeScore;
+        this.awayScore = awayScore;
     }
 
     /**
@@ -85,6 +111,14 @@ public class Match {
 
     public MatchStatus getMatchStatus() {
         return matchStatus;
+    }
+
+    public Integer getHomeScore() { return homeScore; }
+
+    public Integer getAwayScore() { return awayScore; }
+
+    public void setMatchStatus(MatchStatus matchStatus) {
+        this.matchStatus = matchStatus;
     }
 
     // unmodifiable list so nobody can edit the events with getEvents().clear()

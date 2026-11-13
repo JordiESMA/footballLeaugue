@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Resultados</title>
+    <link rel="stylesheet" th:href="@{/css/team.css}">
+</head>
+<body>
+<div th:replace="~{fragments/nav :: nav('matches')}"></div>
+<div class="container">
+    <div class="header-row">
+        <h2>Resultados</h2>
+        <a th:href="@{/teams}" class="btn-back">Equipos</a>
+    </div>
+    <table class="data-table" th:if="${matches != null and !matches.isEmpty()}">
+        <thead><tr><th>Jornada</th><th>Resultado</th></tr></thead>
+        <tbody>
+        <tr th:each="match : ${matches}">
+            <td th:text="${match.matchday}">1</td>
+            <td><a th:href="@{/matches/{id}(id=${match.id})}" th:text="${match.result}">Local : 0 - 0 : Visitante</a></td>
+        </tr>
+        </tbody>
+    </table>
+    <p th:if="${matches == null or matches.isEmpty()}">Todavía no hay resultados.</p>
+</div>
+</body>
+</html>

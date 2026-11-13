@@ -1,35 +1,59 @@
 <!DOCTYPE html>
-<html xmlns:th="http://thymeleaf.org" lang="es">
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Detalle del Equipo</title>
+    <title>Detalle del equipo</title>
     <link rel="stylesheet" th:href="@{/css/team.css}">
 </head>
 <body>
+<div th:replace="~{fragments/nav :: nav('teams')}"></div>
 
-<div class="detail-card">
-    <h1 th:text="${team.name}">Nombre del Equipo</h1>
+<main>
+    <section class="detail-card">
+        <div class="success-box" th:if="${success}" th:text="${success}"></div>
+        <div class="error-box" th:if="${error}" th:text="${error}"></div>
+        <h1 th:text="${team.name}">Nombre del equipo</h1>
 
-    <div class="detail-item">
-        <span class="detail-label">Ciudad</span>
-        <span class="detail-value" th:text="${team.city}">Ciudad</span>
-    </div>
+        <div class="detail-item">
+            <span class="detail-label">Competición y grupo</span>
+            <span class="detail-value" th:text="${team.competitionGroup}">Quarta Catalana - Grup 34</span>
+        </div>
 
-    <div class="detail-item">
-        <span class="detail-label">Año de fundación</span>
-        <span class="detail-value" th:text="${team.foundationYear}">1900</span>
-    </div>
+        <div class="detail-actions">
+            <a th:href="@{/teams}" class="btn-back">Volver a equipos</a>
+            <a th:href="@{/teams/{id}/edit(id=${team.id})}" class="btn">Editar equipo</a>
+            <button type="button" class="btn-open"
+                    onclick="document.getElementById('player-dialog').showModal()">Añadir jugador</button>
+            <form th:action="@{/teams/{id}/delete(id=${team.id})}" method="post">
+                <button type="submit" class="btn-delete">Eliminar equipo</button>
+            </form>
+        </div>
+    </section>
 
-    <div class="detail-actions">
-        <a th:href="@{/teams}" class="btn-back">Volver al listado</a>
+    <section class="detail-card">
+        <h2>Jugadores del equipo</h2>
+        <table class="data-table" th:if="${!team.players.isEmpty()}">
+            <thead>
+            <tr><th>Nombre</th><th>Dorsal</th></tr>
+            </thead>
+            <tbody>
+            <tr th:each="player : ${team.players}">
+                <td th:text="${player.name}">Jugador</td>
+                <td th:text="${player.shirtNumber}">10</td>
+            </tr>
+            </tbody>
+        </table>
+        <p class="empty-message" th:if="${team.players.isEmpty()}">Este equipo todavía no tiene jugadores.</p>
+    </section>
 
-        <form th:action="@{/teams/{id}/delete(id=${team.id})}" method="post"
-              onsubmit="return confirm('¿Quieres eliminar el equipo?')">
-            <button type="submit" class="btn-delete">Eliminar Club</button>
-        </form>
-    </div>
+    <div th:replace="~{team-addPlayer :: playerDialog(${team})}"></div>
+</main>
 
-</div>
-
+<script>
+    const playerDialog = document.getElementById('player-dialog');
+    playerDialog.addEventListener('click', function (event) {
+        if (event.target === playerDialog) playerDialog.close();
+    });
+</script>
 </body>
 </html>

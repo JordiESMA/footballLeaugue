@@ -14,9 +14,6 @@ public class TeamService {
     //We instance the repository for use it
     private final TeamRepository teamRepository;
 
-    //For check the year of foundation
-    private static final int MIN_YEAR = 1000;
-
     public TeamService(TeamRepository teamRepository) {
         this.teamRepository = teamRepository;
     }
@@ -27,32 +24,29 @@ public class TeamService {
      * Creates a new team after validating the data.
      *
      * @param name           team name (required, no duplicates)
-     * @param city           city where the team is based (required)
-     * @param foundationYear year the team was founded (between MIN_YEAR and the current year)
+     * @param competitionGroup competition group (required)
      * @return the saved team
-     * @throws IllegalArgumentException if the year is out of range, the name or city
-     *                                  is empty, or a team with that name already exists
+     * @throws IllegalArgumentException if a required field is empty or the team already exists
      */
-    public Team addTeam(String name, String city, int foundationYear) {
-        checkYear(foundationYear);
-
-        // Check the name and the city are not null or empty
+    public Team addTeam(String name, String competitionGroup) {
         if (!StringUtils.hasText(name)) {
             throw new IllegalArgumentException("El nombre es obligatorio");
         }
-        if (!StringUtils.hasText(city)) {
-            throw new IllegalArgumentException("La ciudad es obligatoria");
+        if (!StringUtils.hasText(competitionGroup)) {
+            throw new IllegalArgumentException("El grupo es obligatorio");
         }
+        checkLength(name, "El nombre");
+        checkLength(competitionGroup, "El grupo");
 
         String nameClear = name.trim();
-        String cityClear = city.trim();
+        String groupClear = competitionGroup.trim();
 
         // If the team name exists we throw an exception, else we save
         if (teamRepository.existsByNameIgnoreCase(nameClear)) {
             throw new IllegalArgumentException("Ese equipo ya existe");
         }
 
-        return teamRepository.save(new Team(nameClear, cityClear, foundationYear));
+        return teamRepository.save(new Team(nameClear, groupClear));
     }
 
     // - EDIT TEAM -
@@ -62,26 +56,23 @@ public class TeamService {
      *
      * @param id             id of the team to edit
      * @param name           new team name (required, no duplicates with other teams)
-     * @param city           new city (required)
-     * @param foundationYear new foundation year (between MIN_YEAR and the current year)
+     * @param competitionGroup new competition group (required)
      * @return the updated team
      * @throws NoSuchElementException   if there is no team with that id
-     * @throws IllegalArgumentException if the year is out of range, the name or city
-     *                                  is empty, or another team already has that name
+     * @throws IllegalArgumentException if a required field is empty or another team has that name
      */
-    public Team editTeam(Long id, String name, String city, int foundationYear) {
-        checkYear(foundationYear);
-
-        // Check the name and the city are not null or empty
+    public Team editTeam(Long id, String name, String competitionGroup) {
         if (!StringUtils.hasText(name)) {
             throw new IllegalArgumentException("El nombre es obligatorio");
         }
-        if (!StringUtils.hasText(city)) {
-            throw new IllegalArgumentException("La ciudad es obligatoria");
+        if (!StringUtils.hasText(competitionGroup)) {
+            throw new IllegalArgumentException("El grupo es obligatorio");
         }
+        checkLength(name, "El nombre");
+        checkLength(competitionGroup, "El grupo");
 
         String nameClear = name.trim();
-        String cityClear = city.trim();
+        String groupClear = competitionGroup.trim();
 
         Team team = getTeamById(id);
 
@@ -95,8 +86,7 @@ public class TeamService {
         }
 
         team.setName(nameClear);
-        team.setCity(cityClear);
-        team.setFoundationYear(foundationYear);
+        team.setCompetitionGroup(groupClear);
 
         return teamRepository.save(team);
     }
@@ -145,18 +135,10 @@ public class TeamService {
         teamRepository.delete(team);
     }
 
-    // - CHECK YEAR -
-
-    /**
-     * Checks that the foundation year is valid.
-     *
-     * @param year foundation year to check
-     * @throws IllegalArgumentException if it is below MIN_YEAR or after the current year
-     */
-    private void checkYear(int year) {
-        int maxYear = java.time.Year.now().getValue();
-        if (year < MIN_YEAR || year > maxYear) {
-            throw new IllegalArgumentException("El año debe estar entre " + MIN_YEAR + " y " + maxYear);
+    /** Checks that a team field does not exceed the database length. */
+    private void checkLength(String value, String field) {
+        if (value.trim().length() > 255) {
+            throw new IllegalArgumentException(field + " no puede superar 255 caracteres");
         }
     }
 }

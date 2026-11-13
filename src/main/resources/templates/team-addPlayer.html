@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Añadir jugador</title>
+    <link rel="stylesheet" th:href="@{/css/team.css}">
+</head>
+<body>
+<div th:replace="~{fragments/nav :: nav('teams')}"></div>
+<main class="container form-page">
+    <p><a th:href="@{/teams/{id}(id=${team.id})}" class="btn-back">Volver al equipo</a></p>
+
+    <dialog th:fragment="playerDialog(team)" id="player-dialog" aria-labelledby="player-dialog-title">
+        <h2 id="player-dialog-title">Añadir jugador a <span th:text="${team.name}">Equipo</span></h2>
+        <div class="error-box" th:if="${error}" th:text="${error}"></div>
+        <form th:action="@{/teams/{id}/addPlayer(id=${team.id})}" method="post" class="modal-form">
+            <label>Nombre
+                <input type="text" name="name" placeholder="Nombre del jugador" required maxlength="255">
+            </label>
+            <label>Dorsal
+                <input type="number" name="shirtNumber" placeholder="10" min="1" max="99" required>
+            </label>
+            <div class="modal-actions">
+                <button type="button" class="btn-cancel"
+                        onclick="document.getElementById('player-dialog').close()">Cancelar</button>
+                <button type="submit" class="btn-submit">Guardar</button>
+            </div>
+        </form>
+    </dialog>
+</main>
+<script>
+    const playerDialog = document.getElementById('player-dialog');
+    playerDialog.addEventListener('click', function (event) {
+        if (event.target === playerDialog) playerDialog.close();
+    });
+</script>
+<script>
+    document.getElementById('player-dialog').showModal();
+</script>
+</body>
+</html>

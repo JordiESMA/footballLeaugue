@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Añadir evento</title>
+    <link rel="stylesheet" th:href="@{/css/team.css}">
+</head>
+<body>
+<div th:replace="~{fragments/nav :: nav('matches')}"></div>
+<div class="container form-page">
+    <h2 th:text="${'Añadir evento: ' + match.homeTeam.name + ' - ' + match.awayTeam.name}">Añadir evento</h2>
+    <div class="error-box" th:if="${error}" th:text="${error}"></div>
+    <form th:action="@{/matches/{id}/events(id=${match.id})}" method="post" class="modal-form">
+        <label>Tipo de evento
+            <select name="eventType" required>
+                <option value="GOAL" th:selected="${eventType == 'GOAL'}">Gol</option>
+                <option value="YELLOWCARD" th:selected="${eventType == 'YELLOWCARD'}">Tarjeta amarilla</option>
+                <option value="REDCARD" th:selected="${eventType == 'REDCARD'}">Tarjeta roja</option>
+            </select>
+        </label>
+        <label>Minuto
+            <input type="number" name="minute" min="1" max="120" required th:value="${minute}">
+        </label>
+        <label>Jugador
+            <select name="playerId" required>
+                <option value="">Selecciona un jugador</option>
+                <option th:each="player : ${players}" th:value="${player.id}"
+                        th:text="${player.name + ' (' + player.team.name + ')'}"
+                        th:selected="${playerId == player.id}"></option>
+            </select>
+        </label>
+        <div class="modal-actions">
+            <a th:href="@{/matches/{id}(id=${match.id})}" class="btn-cancel">Cancelar</a>
+            <button type="submit" class="btn-submit">Guardar evento</button>
+        </div>
+    </form>
+</div>
+</body>
+</html>

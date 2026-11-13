@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<body>
+<nav class="site-nav" th:fragment="nav(activeSection)" aria-label="Navegación principal">
+    <a th:href="@{/teams}" class="brand">Liga</a>
+    <div class="nav-links">
+        <a th:href="@{/teams}"
+           th:class="${activeSection == 'teams' ? 'nav-link active' : 'nav-link'}"
+           th:attr="aria-current=${activeSection == 'teams' ? 'page' : null}">Equipos</a>
+        <a th:href="@{/calendar}"
+           th:class="${activeSection == 'matches' ? 'nav-link active' : 'nav-link'}"
+           th:attr="aria-current=${activeSection == 'matches' ? 'page' : null}">Partidos</a>
+        <a th:href="@{/classification}"
+           th:class="${activeSection == 'classification' ? 'nav-link active' : 'nav-link'}"
+           th:attr="aria-current=${activeSection == 'classification' ? 'page' : null}">Clasificación</a>
+        <a th:href="@{/statistics}"
+           th:class="${activeSection == 'statistics' ? 'nav-link active' : 'nav-link'}"
+           th:attr="aria-current=${activeSection == 'statistics' ? 'page' : null}">Estadísticas</a>
+    </div>
+</nav>
+</body>
+</html>

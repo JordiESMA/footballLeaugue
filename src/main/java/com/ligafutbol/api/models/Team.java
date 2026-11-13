@@ -17,9 +17,7 @@ public class Team {
     @Setter
     private String name;
     @Setter
-    private String city;
-    @Setter
-    private int foundationYear;
+    private String competitionGroup;
 
     @OneToMany(mappedBy = "team")
     private List<Player> players = new ArrayList<>();
@@ -27,10 +25,9 @@ public class Team {
     //CONSTRUCTORS
     public Team() {}
 
-    public Team(String name, String city, int foundationYear) {
+    public Team(String name, String competitionGroup) {
         this.name = name;
-        this.city = city;
-        this.foundationYear = foundationYear;
+        this.competitionGroup = competitionGroup;
     }
 
     //GETTERS
@@ -42,12 +39,8 @@ public class Team {
         return name;
     }
 
-    public String getCity() {
-        return city;
-    }
-
-    public int getFoundationYear() {
-        return foundationYear;
+    public String getCompetitionGroup() {
+        return competitionGroup;
     }
 
     public List<Player> getPlayers() {

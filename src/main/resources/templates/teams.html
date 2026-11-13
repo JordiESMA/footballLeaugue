@@ -6,6 +6,7 @@
     <link rel="stylesheet" th:href="@{/css/team.css}">
 </head>
 <body>
+<div th:replace="~{fragments/nav :: nav('teams')}"></div>
 
 <div class="container">
 
@@ -21,14 +22,14 @@
         <thead>
         <tr>
             <th>Club</th>
-            <th>Ciudad</th>
+            <th>Competición</th>
             <th>Acciones</th>
         </tr>
         </thead>
         <tbody>
         <tr th:each="t : ${teams}">
             <td th:text="${t.name}">FC Barcelona</td>
-            <td th:text="${t.city}">Barcelona</td>
+            <td th:text="${t.competitionGroup}">Quarta Catalana - Grup 34</td>
             <td>
                 <a th:href="@{/teams/{id}(id=${t.id})}" class="link-action">Ver Detalle</a>
             </td>

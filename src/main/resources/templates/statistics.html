@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Estadísticas</title>
+    <link rel="stylesheet" th:href="@{/css/team.css}">
+</head>
+<body>
+<div th:replace="~{fragments/nav :: nav('statistics')}"></div>
+<div class="container">
+    <div class="header-row">
+        <h2>Estadísticas de la liga</h2>
+        <a th:href="@{/teams}" class="btn-back">Equipos</a>
+    </div>
+    <table class="data-table" th:if="${classification != null and !classification.isEmpty()}">
+        <thead><tr><th>Equipo</th><th>Partidos jugados</th><th>Goles a favor</th><th>Goles en contra</th><th>Puntos</th></tr></thead>
+        <tbody>
+        <tr th:each="line : ${classification}">
+            <td th:text="${line.team.name}">Equipo</td>
+            <td th:text="${line.matchesPlayed}">0</td>
+            <td th:text="${line.goalsFor}">0</td>
+            <td th:text="${line.goalsAgainst}">0</td>
+            <td th:text="${line.points}">0</td>
+        </tr>
+        </tbody>
+    </table>
+    <p th:if="${classification == null or classification.isEmpty()}">Todavía no hay estadísticas.</p>
+</div>
+</body>
+</html>
