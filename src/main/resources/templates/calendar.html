@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Calendario</title>
+    <link rel="stylesheet" th:href="@{/css/team.css}">
+</head>
+<body>
+<div th:replace="~{fragments/nav :: nav('matches')}"></div>
+<div class="container">
+    <div class="success-box" th:if="${success}" th:text="${success}"></div>
+    <div class="error-box" th:if="${error}" th:text="${error}"></div>
+    <div class="header-row">
+        <h2>Calendario de partidos</h2>
+        <div class="detail-actions">
+            <a th:href="@{/matches/results}" class="btn">Ver resultados</a>
+            <a th:href="@{/matches/new}" class="btn-open">Añadir partido</a>
+        </div>
+    </div>
+    <table class="data-table" th:if="${matches != null and !matches.isEmpty()}">
+        <thead><tr><th>Jornada</th><th>Partido</th><th>Estado</th><th>Acciones</th></tr></thead>
+        <tbody>
+        <tr th:each="match : ${matches}">
+            <td th:text="${match.matchday}">1</td>
+            <td th:text="${match.homeTeam.name + ' - ' + match.awayTeam.name}">Local - Visitante</td>
+            <td th:text="${match.matchStatus}">SCHEDULED</td>
+            <td><a th:href="@{/matches/{id}(id=${match.id})}" class="link-action">Ver</a></td>
+        </tr>
+        </tbody>
+    </table>
+    <p th:if="${matches == null or matches.isEmpty()}">Todavía no hay partidos en el calendario.</p>
+</div>
+</body>
+</html>

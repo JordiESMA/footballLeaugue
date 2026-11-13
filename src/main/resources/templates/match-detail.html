@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Detalle del partido</title>
+    <link rel="stylesheet" th:href="@{/css/team.css}">
+</head>
+<body>
+<div th:replace="~{fragments/nav :: nav('matches')}"></div>
+<div class="container">
+    <div class="success-box" th:if="${success}" th:text="${success}"></div>
+    <div class="error-box" th:if="${error}" th:text="${error}"></div>
+    <h2 th:text="${'Jornada ' + match.matchday}">Jornada 1</h2>
+    <div class="detail-item">
+        <span class="detail-label">Partido</span>
+        <span class="detail-value" th:text="${match.homeTeam.name + ' - ' + match.awayTeam.name}">Local - Visitante</span>
+    </div>
+    <div class="detail-item">
+        <span class="detail-label">Resultado</span>
+        <span class="detail-value" th:text="${match.result}">Local : 0 - 0 : Visitante</span>
+    </div>
+    <div class="detail-item">
+        <span class="detail-label">Estado</span>
+        <span class="detail-value" th:text="${match.matchStatus}">SCHEDULED</span>
+    </div>
+    <div class="detail-actions">
+        <a th:href="@{/calendar}" class="btn-back">Calendario</a>
+        <a th:if="${match.matchStatus.name() != 'FINISHED'}"
+           th:href="@{/matches/{id}/events/new(id=${match.id})}" class="btn-open">Añadir evento</a>
+        <form th:if="${match.matchStatus.name() != 'FINISHED'}"
+              th:action="@{/matches/{id}/finish(id=${match.id})}" method="post">
+            <button type="submit" class="btn-submit">Terminar partido</button>
+        </form>
+    </div>
+
+    <h2>Eventos</h2>
+    <table class="data-table" th:if="${!match.events.isEmpty()}">
+        <thead><tr><th>Minuto</th><th>Tipo</th><th>Jugador</th><th>Equipo</th></tr></thead>
+        <tbody>
+        <tr th:each="event : ${match.events}">
+            <td th:text="${event.minute}">1</td>
+            <td th:text="${event.eventName}">GOAL</td>
+            <td th:text="${event.player.name}">Jugador</td>
+            <td th:text="${event.player.team.name}">Equipo</td>
+        </tr>
+        </tbody>
+    </table>
+    <p th:if="${match.events.isEmpty()}">Este partido todavía no tiene eventos.</p>
+</div>
+</body>
+</html>

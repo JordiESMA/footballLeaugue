@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Jugadores por equipo</title>
+    <link rel="stylesheet" th:href="@{/css/team.css}">
+</head>
+<body>
+<div th:replace="~{fragments/nav :: nav('')}"></div>
+<main class="container">
+    <h2>Jugadores por equipo</h2>
+    <p>Los jugadores se consultan en la tabla del detalle de cada equipo.</p>
+    <a th:href="@{/teams}" class="btn-open">Ir a equipos</a>
+</main>
+</body>
+</html>

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Editar equipo</title>
+    <link rel="stylesheet" th:href="@{/css/team.css}">
+</head>
+<body>
+<div th:replace="~{fragments/nav :: nav('teams')}"></div>
+<div class="container form-page">
+    <h2>Editar equipo</h2>
+    <div class="error-box" th:if="${error}" th:text="${error}"></div>
+    <form th:action="@{/teams/{id}/edit(id=${team.id})}" method="post" class="modal-form">
+        <label>Club
+            <input type="text" name="name" required maxlength="255"
+                   th:value="${name != null ? name : team.name}">
+        </label>
+        <label>Competición y grupo
+            <input type="text" name="competitionGroup" required maxlength="255"
+                   th:value="${competitionGroup != null ? competitionGroup : team.competitionGroup}">
+        </label>
+        <div class="modal-actions">
+            <a th:href="@{/teams/{id}(id=${team.id})}" class="btn-cancel">Cancelar</a>
+            <button type="submit" class="btn-submit">Guardar cambios</button>
+        </div>
+    </form>
+</div>
+</body>
+</html>

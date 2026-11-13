@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Nuevo partido</title>
+    <link rel="stylesheet" th:href="@{/css/team.css}">
+</head>
+<body>
+<div th:replace="~{fragments/nav :: nav('matches')}"></div>
+<div class="container form-page">
+    <h2>Nuevo partido</h2>
+    <div class="error-box" th:if="${error}" th:text="${error}"></div>
+    <form th:action="@{/matches}" method="post" class="modal-form">
+        <label>Jornada
+            <input type="number" name="matchday" min="1" required th:value="${matchday}">
+        </label>
+        <label>Equipo local
+            <select name="homeTeamId" required>
+                <option value="">Selecciona un equipo</option>
+                <option th:each="team : ${teams}" th:value="${team.id}" th:text="${team.name}"
+                        th:selected="${homeTeamId == team.id}"></option>
+            </select>
+        </label>
+        <label>Equipo visitante
+            <select name="awayTeamId" required>
+                <option value="">Selecciona un equipo</option>
+                <option th:each="team : ${teams}" th:value="${team.id}" th:text="${team.name}"
+                        th:selected="${awayTeamId == team.id}"></option>
+            </select>
+        </label>
+        <div class="modal-actions">
+            <a th:href="@{/calendar}" class="btn-cancel">Cancelar</a>
+            <button type="submit" class="btn-submit">Guardar</button>
+        </div>
+    </form>
+</div>
+</body>
+</html>
