@@ -7,6 +7,7 @@ import com.ligafutbol.api.repositories.MatchRepository;
 import com.ligafutbol.api.repositories.TeamRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.core.annotation.Order;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,6 +20,7 @@ import java.util.List;
 
 /** Loads the FCF 2026-27 group calendar on first app startup. */
 @Component
+@Order(1)
 @ConditionalOnProperty(name = "league.import.enabled", havingValue = "true", matchIfMissing = true)
 public class FcfLeagueImport implements CommandLineRunner {
 
