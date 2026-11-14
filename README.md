@@ -72,7 +72,8 @@ El código Java está en `src/main/java/com/ligafutbol/api` y las vistas y recur
 - `MatchService`: crea, lista, busca y termina partidos.
 - `EventService`: añade goles o tarjetas a un partido.
 - `ClassificationService`: calcula la clasificación de `Quarta Catalana - Grup 34` usando los partidos finalizados.
-- `FcfLeagueImport`: al iniciar la aplicación importa el calendario incluido en `resources/data/fcf-2026-27.txt`, si los partidos aún no existen. No importa plantillas de jugadores; se añaden desde el detalle del equipo.
+- `FcfLeagueImport`: al iniciar la aplicación importa el calendario incluido en `resources/data/fcf-2026-27.txt`, si los partidos aún no existen.
+- `DemoDataSeeder`: reemplaza los nombres de jugadores por nombres ficticios, completa las plantillas hasta 15 jugadores y añade goleadores y tarjetas de demostración a los partidos finalizados. Los marcadores importados se conservan.
 
 **Controladores**
 
@@ -134,6 +135,7 @@ El código Java está en `src/main/java/com/ligafutbol/api` y las vistas y recur
 - Los eventos necesitan tipo, minuto entre 1 y 120 y un jugador de uno de los dos equipos del partido. No se admiten eventos en partidos finalizados.
 - La clasificación cuenta únicamente partidos finalizados del grupo indicado. Otorga 3 puntos por victoria y 1 por empate; ordena por puntos, diferencia de goles, goles a favor y nombre.
 - El calendario incluido tiene 22 jornadas y se carga sin duplicar partidos ya existentes. En los partidos con resultado publicado, se usa el marcador guardado.
+- Los nombres, goleadores y tarjetas generados por `DemoDataSeeder` son datos ficticios de demostración, no datos reales de jugadores ni actas oficiales.
 
 ## Ejemplo de flujo: añadir equipo
 
